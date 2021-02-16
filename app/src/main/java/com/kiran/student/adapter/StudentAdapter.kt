@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kiran.student.R
+import com.kiran.student.api.ServiceBuilder
 import com.kiran.student.entity.Student
 import com.kiran.student.repository.RepoAddStudent
 import de.hdodenhof.circleimageview.CircleImageView
@@ -45,6 +46,13 @@ class StudentAdapter  (
                 holder.tvAge.text = student.age
                 holder.tvAddress.text = student.address
                 holder.tvGender.text = student.gender
+                val imagePath = ServiceBuilder.loadImagePath() + student.photo
+                if (!student.photo.equals("no-photo.jpg")) {
+                        Glide.with(context)
+                                .load(imagePath)
+                                .fitCenter()
+                                .into(holder.imgProfile)
+                }
 
                 holder.btnDelete.setOnClickListener{
                         val builder = AlertDialog.Builder(context)
@@ -87,17 +95,7 @@ class StudentAdapter  (
                         alertDialog.show()
                 }
 
-                when(student.gender){
-                        "Male" -> Glide.with(context)
-                                .load("https://cdn.wallpapersafari.com/4/72/Ou9IRM.jpg")
-                                .into(holder.imgProfile)
-                        "Female" -> Glide.with(context)
-                                .load("https://media.istockphoto.com/vectors/default-avatar-profile-icon-grey-photo-placeholder-hand-drawn-modern-vector-id1273297923?b=1&k=6&m=1273297923&s=612x612&w=0&h=kCbZRaXozftYrZv44poGI6_RrTg7DMa1lIqz_NtZNis=")
-                                .into(holder.imgProfile)
-                        "Other" -> Glide.with(context)
-                                .load("https://png.pngtree.com/png-vector/20190217/ourmid/pngtree-smile-vector-template-design-illustration-png-image_555082.jpg")
-                                .into(holder.imgProfile)
-                }
+
         }
 
         override fun getItemCount(): Int {
